@@ -1,0 +1,255 @@
+{
+  "common": {
+    "continue": "Continue",
+    "next": "Next",
+    "back": "Back",
+    "goBack": "Go Back",
+    "notSpecified": "Not specified",
+    "loading": "App Starting..."
+  },
+  "header": {
+    "greeting": "Hello",
+    "settings": "Account Settings",
+    "signOut": "Sign Out"
+  },
+  "login": {
+    "welcomeTitle": "Welcome to SwiftDrop",
+    "welcomeSubtitle": "Sign in to get started.",
+    "googleButton": "Sign in with Google",
+    "googleLoading": "Signing in...",
+    "orSeparator": "OR",
+    "phoneNumberLabel": "Phone Number",
+    "phoneError": {
+      "ghanaInvalid": "Please enter a valid 9-digit Ghanaian number (e.g., 241234567).",
+      "ukInvalid": "Please enter a valid 10-digit UK mobile number starting with 7."
+    }
+  },
+  "otp": {
+    "title": "Verify Your Number",
+    "subtitle": "Enter the 6-digit code sent to {{phoneNumber}}",
+    "label": "OTP",
+    "error": "Incorrect code. Please try again.",
+    "verifyButton": "Verify",
+    "noCode": "Didn't receive a code?",
+    "resend": "Resend",
+    "changeNumber": "Change number"
+  },
+  "register": {
+    "title": "Complete Your Profile",
+    "subtitle": "A few more details to get you set up.",
+    "fullNameLabel": "Full Name",
+    "fullNamePlaceholder": "Full Name",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "Email Address",
+    "finishButton": "Finish Setup"
+  },
+  "services": {
+    "title": "How can we help you today?",
+    "food": {
+        "title": "Food & Restaurant",
+        "desc": "Get your favorite meals delivered fast."
+    },
+    "grocery": {
+        "title": "Grocery & Supermarket",
+        "desc": "Fresh groceries from your local store."
+    },
+    "pharmacy": {
+        "title": "Pharmacy & Medical",
+        "desc": "Medicine and health supplies to your door."
+    },
+    "package": {
+        "title": "Package & Parcel",
+        "desc": "Send and receive parcels with ease."
+    },
+    "document": {
+        "title": "Document",
+        "desc": "Urgent documents delivered securely."
+    },
+    "heavy": {
+        "title": "Heavy Items",
+        "desc": "For furniture and other bulky items."
+    },
+    "moving": {
+        "title": "House Moving",
+        "desc": "Relocate your home or office with ease."
+    },
+    "business": {
+        "title": "Business Logistics",
+        "desc": "Professional logistics for your company."
+    }
+  },
+  "storeSelection": {
+    "title": "Choose a Restaurant or Store",
+    "filterByCuisine": "Filter by Cuisine",
+    "allCuisines": "All Cuisines",
+    "sortByRating": "Rating"
+  },
+  "location": {
+      "title": "Set Your Route",
+      "subtitle": "Where should we pickup and deliver?",
+      "pickupLabel": "Pickup Location (From)",
+      "deliveryLabel": "Delivery Location (To)",
+      "placeholder": "e.g., KNUST, Kumasi City Mall",
+      "currentLocationLabel": "Current Location",
+      "currentLocationError": "Failed to get current location.",
+      "validationError": "Please select a valid address from the suggestions list.",
+      "searching": "Searching"
+  },
+  "packageDetails": {
+    "title": "Package Details",
+    "subtitle": "Tell us about your item.",
+    "descriptionLabel": "Brief Description",
+    "descriptionPlaceholder": "e.g., Laptop, Important documents, a gift box",
+    "weightLabel": "Estimated Weight"
+  },
+  "confirmation": {
+      "title": "Confirm Your Delivery",
+      "summaryTitle": "Order Summary",
+      "serviceType": "Service Type",
+      "pickup": "Pickup Location",
+      "delivery": "Delivery Location",
+      "store": "Store",
+      "packageDetails": "Package Details",
+      "description": "Description",
+      "weight": "Weight",
+      "movingDetails": "Moving Details",
+      "property": "Property",
+      "pickupFloor": "Pickup Floor",
+      "logisticsDetails": "Logistics Details",
+      "company": "Company",
+      "vehicle": "Vehicle",
+      "tier": {
+          "title": "Choose Delivery Speed",
+          "express": {
+            "title": "Express",
+            "desc": "Our fastest option, direct to destination."
+          },
+          "sameDay": {
+            "title": "Same-Day",
+            "desc": "Delivered within hours, best value."
+          },
+          "scheduled": {
+            "title": "Scheduled",
+            "desc": "Pick a specific time for delivery."
+          },
+          "economy": {
+            "title": "Economy",
+            "desc": "Cost-effective, delivered within 24 hours."
+          }
+      },
+      "price": {
+          "title": "Price Breakdown",
+          "baseFare": "Base Fare",
+          "distanceFee": "Distance Fee",
+          "weightFee": "Weight Fee",
+          "tierSurcharge": "Speed Surcharge",
+          "serviceFee": "Service Fee",
+          "total": "Total"
+      },
+      "confirmButton": "Confirm & Pay"
+  },
+  "tracking": {
+      "title": "Tracking Your Delivery",
+      "currentStatus": "Current",
+      "statuses": {
+          "placed": "Order Placed",
+          "assigned": "Rider Assigned",
+          "onWay": "On The Way",
+          "delivered": "Delivered"
+      },
+      "routeUpdate": {
+          "title": "Dynamic Route Update",
+          "loading": "Analyzing traffic..."
+      },
+      "notification": {
+          "title": "Delivery Update: {{status}}",
+          "body": "Your order status was updated at {{time}}."
+      },
+      "cancelOrder": "Cancel Order"
+  },
+  "rating": {
+      "title": "How was your delivery?",
+      "subtitle": "Your feedback helps us improve.",
+      "skip": "Skip",
+      "submit": "Submit Review",
+      "reviewPlaceholder": "Tell us more about your experience (optional)"
+  },
+  "settings": {
+      "title": "Account Settings",
+      "profile": {
+          "title": "Profile Information",
+          "nameLabel": "Full Name",
+          "emailLabel": "Email Address"
+      },
+      "notifications": {
+          "title": "Notification Preferences",
+          "orderUpdates": {
+              "title": "Order Updates",
+              "desc": "Receive updates on your delivery status."
+          },
+          "promotions": {
+              "title": "Promotional Offers",
+              "desc": "Get notified about special discounts and offers."
+          }
+      },
+      "actions": {
+        "title": "Account Actions",
+        "orderHistory": "Order History",
+        "logout": "Logout",
+        "deactivate": "Deactivate account temporarily",
+        "delete": "Delete account permanently"
+      },
+      "saveButton": "Save Changes",
+      "deleteModal": {
+        "title": "Delete Account?",
+        "message": "This is permanent and cannot be undone. Are you sure you want to delete your account and all associated data?",
+        "confirmButton": "Yes, Delete"
+      }
+  },
+  "orderHistory": {
+    "title": "Order History",
+    "noOrders": "You have no past orders.",
+    "reorder": "Reorder",
+    "dispute": "Dispute",
+    "completed": "Completed",
+    "orderOn": "Order on",
+    "disputeModal": {
+        "title": "Lodge a Dispute",
+        "message": "You are creating a dispute for order #{{orderId}}. Please describe the issue.",
+        "reasonLabel": "Reason for dispute",
+        "reasonPlaceholder": "e.g., Item was damaged, wrong item delivered, never arrived...",
+        "confirmButton": "Submit Dispute"
+    }
+  },
+  "orderDetails": {
+      "title": "Order Details",
+      "cancelOrder": "Cancel Order"
+  },
+  "cancelModal": {
+      "title": "Cancel Order?",
+      "message": "Are you sure you want to cancel this order? This action cannot be undone.",
+      "confirmButton": "Yes, Cancel Order"
+  },
+  "notifications": {
+      "banner": {
+          "title": "Stay Updated!",
+          "body": "Enable notifications to get live updates on your delivery status.",
+          "enableButton": "Enable",
+          "laterButton": "Maybe Later",
+          "enabledTitle": "SwiftDrop Notifications",
+          "enabledBody": "You are all set to receive live updates!"
+      },
+      "promo": {
+          "title": "Special Offer!",
+          "body": "Get 15% off on your next {{service}} delivery. Use code: SWIFT15"
+      },
+      "paymentSuccess": {
+          "title": "Payment Successful",
+          "body": "Your payment has been confirmed. We are now processing your order."
+      },
+      "ratingReminder": {
+          "title": "Rate Your Delivery!",
+          "body": "We would love to hear your feedback on your recent delivery experience."
+      }
+  }
+}

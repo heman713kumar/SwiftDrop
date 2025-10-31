@@ -1,0 +1,255 @@
+{
+    "common": {
+        "continue": "Kɔ so",
+        "next": "Deɛ ɛdi hɔ",
+        "back": "San Akyi",
+        "goBack": "Kɔ Akyiri",
+        "notSpecified": "Wɔnkyerɛɛ mu",
+        "loading": "App no rehyɛ aseɛ..."
+    },
+    "header": {
+        "greeting": "Akwaaba",
+        "settings": "Akawnt Sɛtinse",
+        "signOut": "Pue"
+    },
+    "login": {
+        "welcomeTitle": "Akwaaba wɔ SwiftDrop mu",
+        "welcomeSubtitle": "Kɔ mu na hyɛ aseɛ.",
+        "googleButton": "Fa Google kɔ mu",
+        "googleLoading": "Yɛre kɔ mu...",
+        "orSeparator": "ANAASƐ",
+        "phoneNumberLabel": "Foon Nɔma",
+        "phoneError": {
+            "ghanaInvalid": "Yɛsrɛ wo, hyɛ Ghana foon nɔma a ɛwɔ nɔma 9 a ɛteɛ mu (mf. 241234567).",
+            "ukInvalid": "Yɛsrɛ wo, hyɛ UK foon nɔma a ɛwɔ nɔma 10 na ɛhyɛ aseɛ ne 7 mu."
+        }
+    },
+    "otp": {
+        "title": "Hwɛ wo Nɔma mu",
+        "subtitle": "Hyɛ nɔma 6 a yɛde amena wo wɔ {{phoneNumber}} so no mu",
+        "label": "OTP",
+        "error": "Nɔma no nyɛ. Yɛsrɛ wo, san bɔ mmɔden bio.",
+        "verifyButton": "Hwɛ mu",
+        "noCode": "Wannya nɔma no anaa?",
+        "resend": "San mena",
+        "changeNumber": "Sesa nɔma"
+    },
+    "register": {
+        "title": "Wie wo Prahyia so Nsɛm",
+        "subtitle": "Nsɛm kakra bi a ɛhia na yɛatumi ayɛ wo kama.",
+        "fullNameLabel": "Din Pɔtee",
+        "fullNamePlaceholder": "Din Pɔtee",
+        "emailLabel": "Email Adrɛse",
+        "emailPlaceholder": "Email Adrɛse",
+        "finishButton": "Wie Nhyehyɛeɛ"
+    },
+    "services": {
+        "title": "Yɛbɛyɛ dɛn aboa wo nnɛ?",
+        "food": {
+            "title": "Aduane & Adidibea",
+            "desc": "Ma yɛmfa w'aduane a wopɛ no mmra wo ntɛm."
+        },
+        "grocery": {
+            "title": "Nnuaba & Tɔɔnso",
+            "desc": "Nnuaba foforɔ firi wo tɔɔnso a ɛbɛn wo."
+        },
+        "pharmacy": {
+            "title": "Aduro & Ayaresabea Nnoɔma",
+            "desc": "Aduro ne apɔmuden nnoɔma a ɛbɛba w'anim."
+        },
+        "package": {
+            "title": "Nkrante & Pooso",
+            "desc": "Mena na gye nkrante mmerɛ sononko so."
+        },
+        "document": {
+            "title": "Krataa",
+            "desc": "Nkrataa a ɛho hia a yɛde bɛbrɛ wo dwoodwoo."
+        },
+        "heavy": {
+            "title": "Nnoɔma a ɛmu yɛ duru",
+            "desc": "Sɛ te sɛ nkonnwa ne nnoɔma akɛseɛ foforɔ."
+        },
+        "moving": {
+            "title": "Ofie Tutu",
+            "desc": "Tu wo fie anaa ɔfese mmerɛ sononko so."
+        },
+        "business": {
+            "title": "Adwumayɛ ho Nsɛm",
+            "desc": "Adwumayɛ ho nhyehyɛeɛ a ɛyɛ papa ma wo dwumadie."
+        }
+    },
+    "storeSelection": {
+        "title": "Yi Adidibea anaa Tɔɔnso",
+        "filterByCuisine": "Yi Nnuane Su",
+        "allCuisines": "Nnuane Nyinaa",
+        "sortByRating": "Sɛnea nnipa pɛ"
+    },
+    "location": {
+        "title": "Hyehyɛ wo Kwan",
+        "subtitle": "Ɛhe na yɛnfa na ɛhe na yɛnkɔgye?",
+        "pickupLabel": "Afa (Ɛfiri)",
+        "deliveryLabel": "Agyae (Ɛkɔ)",
+        "placeholder": "e.g., KNUST, Kumasi City Mall",
+        "currentLocationLabel": "Baabi a wowɔ seesei",
+        "currentLocationError": "Yɛantumi annya baabi a wowɔ.",
+        "validationError": "Yɛsrɛ wo, yi adrɛse a ɛteɛ firi nea ɛwɔ hɔ no mu.",
+        "searching": "Yɛrehwehwɛ"
+    },
+    "packageDetails": {
+        "title": "Nkrante ho Nsɛm",
+        "subtitle": "Ka biribi fa wo nnoɔma no ho.",
+        "descriptionLabel": "Nkyerɛkyerɛmu tiawa",
+        "descriptionPlaceholder": "mf. Kɔmputa, Nkrataa a ɛho hia, akyɛdeɛ adaka",
+        "weightLabel": "Muduro a Wosusu"
+    },
+    "confirmation": {
+        "title": "Hwɛ wo Nsɛm a Wɔde Ama mu",
+        "summaryTitle": "Nsɛm a Wɔde Ama no Tiatia",
+        "serviceType": "Ɔsom a Wɔde Ma",
+        "pickup": "Afa",
+        "delivery": "Agyae",
+        "store": "Tɔɔnso",
+        "packageDetails": "Nkrante ho Nsɛm",
+        "description": "Nkyerɛkyerɛmu",
+        "weight": "Muduro",
+        "movingDetails": "Ofie Tutu ho Nsɛm",
+        "property": "Agточка",
+        "pickupFloor": "Afa a Wɔfa",
+        "logisticsDetails": "Adwumayɛ ho Nsɛm",
+        "company": "Adwumakuo",
+        "vehicle": "Kar",
+        "tier": {
+            "title": "Yi ɔkwan a yɛmfa so mfa mma wo",
+            "express": {
+                "title": "Ntɛmntɛm",
+                "desc": "Yɛn kwan a ɛyɛ hare paa, ɛkɔ tẽẽ."
+            },
+            "sameDay": {
+                "title": "Nnɛ da yi ara",
+                "desc": "Yɛde bɛbrɛ wo nnɔnhwere mu, ɛboɔ yɛ fɛ."
+            },
+            "scheduled": {
+                "title": "Da a wɔahyɛ",
+                "desc": "Yi bere pɔtee bi a yɛmfa mma wo."
+            },
+            "economy": {
+                "title": "Sika ketewaa bi",
+                "desc": "Ne boɔ nyɛ den, yɛde bɛbrɛ wo nnɔnhwere 24 mu."
+            }
+        },
+        "price": {
+            "title": "Sika a Wɔbɛtua",
+            "baseFare": "Sika a Wɔhyɛ da tua",
+            "distanceFee": "Akwansin Sika",
+            "weightFee": "Muduro Sika",
+            "tierSurcharge": "Ɔsom a Wɔayi Sika",
+            "serviceFee": "Ɔsom Sika",
+            "total": "Dodow"
+        },
+        "confirmButton": "Hwɛ mu & Tua"
+    },
+    "tracking": {
+        "title": "Di wo Nnoɔma akyi",
+        "currentStatus": "Seesei ara",
+        "statuses": {
+            "placed": "Wɔde ahyɛ hɔ",
+            "assigned": "Wɔde ama ɔkafoɔ",
+            "onWay": "Ɔrekɔ",
+            "delivered": "Wɔde adu hɔ"
+        },
+        "routeUpdate": {
+            "title": "Kwan foforɔ a yɛrefa so",
+            "loading": "Yɛrehwɛ traffic mu..."
+        },
+        "notification": {
+            "title": "Nsɛm foforɔ: {{status}}",
+            "body": "Yɛasesa wo nsɛm a ɛfa wo nnoɔma ho wɔ {{time}}."
+        },
+        "cancelOrder": "Twitwa Order no"
+    },
+    "rating": {
+        "title": "Wo nnoɔma a yɛde brɛɛ wo no te sɛn?",
+        "subtitle": "Wo mmuaeɛ bɛboa ma yɛayɛ yie.",
+        "skip": "Twam",
+        "submit": "Mena Mmuaeɛ",
+        "reviewPlaceholder": "Ka yɛn ho asɛm pii fa wo suahunu ho (ɛnyɛ ahyɛdeɛ)"
+    },
+    "settings": {
+        "title": "Akawnt Sɛtinse",
+        "profile": {
+            "title": "Prahyia so Nsɛm",
+            "nameLabel": "Din Pɔtee",
+            "emailLabel": "Email Adrɛse"
+        },
+        "notifications": {
+            "title": "Nkaebɔ a Wopɛ",
+            "orderUpdates": {
+                "title": "Order Foforɔ",
+                "desc": "Gye nsɛm foforɔ fa wo nnoɔma a ɛrekɔ so no ho."
+            },
+            "promotions": {
+                "title": "Tɔ Ketewa",
+                "desc": "Gye nkaebɔ fa tɔ ketewa ne nneɛma foforɔ a ɛyɛ anigye ho."
+            }
+        },
+        "actions": {
+            "title": "Akawnt Nsɛm",
+            "orderHistory": "Order a Wɔakora so",
+            "logout": "Pue",
+            "deactivate": "To akawnt no mu kakra",
+            "delete": "Popa akawnt no korakora"
+        },
+        "saveButton": "Sie Nsakraeɛ",
+        "deleteModal": {
+            "title": "Wopɛ sɛ wopopa akawnt no?",
+            "message": "Sɛ woyɛ yei a, worentumi nsan anya bio. Wowɔ adwen pa sɛ wopɛ sɛ wopopa w'akawnt ne wo nsɛm nyinaa?",
+            "confirmButton": "Aane, popa"
+        }
+    },
+    "orderHistory": {
+        "title": "Order a Wɔakora so",
+        "noOrders": "Wonni order biara a atwam.",
+        "reorder": "San Order",
+        "dispute": "Kasatia",
+        "completed": "Wɔawie",
+        "orderOn": "Order wɔ",
+        "disputeModal": {
+            "title": "Kasa tia",
+            "message": "Worekasa atia order #{{orderId}}. Yɛsrɛ wo, kyerɛkyerɛ asɛm no mu.",
+            "reasonLabel": "Nea enti a worekasa atia",
+            "reasonPlaceholder": "mf. Nnoɔma no asɛe, wɔde nnoɔma foforɔ brɛɛ me, mannnya...",
+            "confirmButton": "Mena kasatia no"
+        }
+    },
+    "orderDetails": {
+        "title": "Order ho Nsɛm",
+        "cancelOrder": "Twitwa Order no"
+    },
+    "cancelModal": {
+        "title": "Wopɛ sɛ wotwitwa order no?",
+        "message": "Wopɛ sɛ wotwitwa order yi mu ampa? Worentumi nsan nyɛ bio.",
+        "confirmButton": "Aane, Twitwa mu"
+    },
+    "notifications": {
+        "banner": {
+            "title": "Te Nsɛm Foforɔ!",
+            "body": "Ma kwan ma yɛmfa nkaebɔ mmena wo na te nsɛm foforɔ fa wo nnoɔma ho.",
+            "enableButton": "Ma kwan",
+            "laterButton": "Ebia Akyire",
+            "enabledTitle": "SwiftDrop Nkaebɔ",
+            "enabledBody": "W'ahyɛ da ayɛ krado sɛ wobɛte nsɛm foforɔ."
+        },
+        "promo": {
+            "title": "Akɛseɛ!",
+            "body": "Nya 15% tɔɔ fa wo {{service}} a edi hɔ no so. Fa koodu: SWIFT15"
+        },
+        "paymentSuccess": {
+            "title": "Sika Tua Ayɛ Yie",
+            "body": "Yɛagye wo sika a wotuaeɛ no. Yɛreyɛ wo nnoɔma no ho adwuma seesei ara."
+        },
+        "ratingReminder": {
+            "title": "Ma yɛn nim wo adwene!",
+            "body": "Yɛpɛ sɛ yɛte wo adwene fa wo nnoɔma a yɛde brɛɛ wo nkyɛeɛ no ho."
+        }
+    }
+}

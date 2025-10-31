@@ -1,0 +1,7 @@
+{
+  "name": "SwiftDrop Ghana",
+  "description": "A modern, reliable doorstep delivery service for Ghana. Easily schedule pickups and deliveries for parcels, food, groceries, and more, with real-time tracking.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
