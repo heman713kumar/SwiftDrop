@@ -2,8 +2,8 @@
 import { Request, Response } from 'express';
 import * as db from '../db';
 import { AuthenticatedRequest } from '../middleware/auth';
-// FIX: Change path from '../../types' to '../types'
-import { SupportTicket, SupportMessage, FaqItem } from '../types';
+// FIX: Correcting the DTO alias names to match the names exported from types.ts
+import { DbSupportTicket as SupportTicket, DbSupportMessage as SupportMessage, FaqItem } from '../types';
 
 // POST /api/support/tickets
 // Fix: Use namespace-qualified express types to avoid global type conflicts.
@@ -61,7 +61,8 @@ export const getTicketDetails = (req: Request, res: Response) => {
     // Combine ticket info with its messages
     const ticketDetails: SupportTicket = {
         id: ticket.id,
-        userId: ticket.user_id,
+        // FIX: The DTO uses userId, which is correct for the DTO
+        userId: ticket.user_id, 
         subject: ticket.subject,
         description: ticket.description,
         status: ticket.status,
@@ -120,7 +121,9 @@ export const addMessageToTicket = (req: Request, res: Response) => {
         senderId: newMessage.sender_id,
         senderType: newMessage.sender_type,
         message: newMessage.message,
-        timestamp: newMessage.timestamp.toISOString(),
+        // FIX D: DbSupportMessage 'timestamp' is a Date object, but the DTO expects a string.
+        // The type for SupportMessage needs to be changed in types.ts (done in step 3).
+        timestamp: newMessage.timestamp.toISOString(), 
     };
 
     res.status(201).json(responseMessage);

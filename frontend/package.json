@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@dataconnect/generated": "file:src/dataconnect-generated",
     "@google/genai": "^1.28.0",
     "firebase": "^10.12.2",
     "lodash": "^4.17.21",

@@ -1,247 +1,62 @@
-
+// This file manages the connection to the PostgreSQL database.
+import { Pool } from 'pg';
 import { v4 as uuidv4 } from 'uuid';
-import { UserProfile, OrderDetails, ServiceCategory, LocationInfo, PackageDetails, PriceBreakdown, OrderStatus, OrderHistoryItem, UserStats, SupportTicketStatus, SupportTicketPriority, FaqItem, SupportTicket, SupportMessage } from './types';
+// FIX: Removed the DTO aliases (SupportTicket, SupportMessage) that were causing conflicts, 
+// and imported all Db interfaces and the PublicRating DTO directly.
+import { 
+    UserProfile, OrderDetails, ServiceCategory, LocationInfo, PackageDetails, PriceBreakdown, OrderStatus, OrderHistoryItem, UserStats, 
+    SupportTicketStatus, SupportTicketPriority, FaqItem, 
+    PublicRating, // CORRECT NAME
+    DbUser, DbMedia, DbUserSettings, DbPrivacySettings, DbNotificationPreferences, DbOrder, DbOrderTracking, DbOrderRating, DbOrderDispute, DbPartner, DbPartnerAvailability, DbChatMessage, DbCallLog, DbDeviceToken, DbNotificationLog, DbEventLog, DbUserAnalytics, DbSupportTicket, DbSupportMessage
+} from './types';
+
+
+// These values are now read from environment variables, which will be set by Cloud Run Secrets.
+// This is more secure and flexible than hardcoding them.
+const dbPassword = process.env.DB_PASSWORD;
+const dbHost = process.env.DB_HOST; // e.g., 'aws-1-eu-north-1.pooler.supabase.com'
+const dbProjectRef = process.env.DB_PROJECT_REF; // e.g., 'mlisaewbgssgbumndiqc'
+
+if (!dbPassword || !dbHost || !dbProjectRef) {
+    console.error('[Database] Missing required database environment variables (DB_PASSWORD, DB_HOST, DB_PROJECT_REF).');
+    // For local development, you would typically use a .env file.
+    // In production on Cloud Run, these must be set.
+}
+
+// Constructs the connection string dynamically from environment variables.
+const connectionString = `postgresql://postgres.${dbProjectRef}:${dbPassword}@${dbHost}:6543/postgres`;
+
+export const pool = new Pool({
+    connectionString: connectionString,
+    // Supabase recommends these settings for the transaction pooler
+    ssl: {
+        rejectUnauthorized: false,
+    },
+    max: 20,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 2000,
+});
+
+pool.on('connect', () => {
+    console.log('[Database] PostgreSQL connected successfully via pool.');
+});
+
+pool.on('error', (err) => {
+    console.error('[Database] Unexpected error on idle PostgreSQL client', err);
+    // Cast 'process' to 'any' to bypass the TypeScript error for the 'exit' property.
+    (process as any).exit(-1);
+});
+
+// A helper function to easily query the database
+export const query = (text: string, params?: any[]) => pool.query(text, params);
+
 
 // ===================================================================================
 // == PRODUCTION DATABASE ARCHITECTURE NOTE
 // ===================================================================================
 // This file simulates a database using in-memory Maps for demonstration purposes.
-// In a production environment, this would be replaced by a robust, multi-service
-// data layer:
-//
-// 1. PostgreSQL (Primary Database):
-//    - Used for persistent, relational data that requires ACID compliance.
-//    - Connection pooling would be essential for managing connections efficiently.
-//    - Tables would include: users, orders, partners, media, chat_messages, etc.
-//
-// 2. Redis (Caching & Volatile Data):
-//    - Used for high-speed, temporary data storage to reduce load on PostgreSQL.
-//    - Ideal for:
-//        - Caching frequently accessed, non-critical data.
-//        - Storing session information (like active refresh tokens).
-//        - Managing short-lived data (like OTP codes).
-//        - Pub/Sub for real-time notifications and WebSocket events.
-//        - Storing JWT blacklists for quick invalidation checks.
-//
-// Below, data stores are marked with `[PostgreSQL]` or `[Redis]` to indicate
-// where they would reside in a production architecture.
+// All interfaces are now imported from ./types.ts.
 // ===================================================================================
-
-
-// --- DATABASE TABLE INTERFACES ---
-
-export interface DbUser {
-    id: string;
-    phone: string | null;
-    email: string;
-    name: string;
-    password_hash: string | null; // For password-based auth
-    profile_photo_url: string | null;
-    auth_provider: 'phone' | 'google';
-    google_id: string | null;
-    phone_verified: boolean;
-    status: 'active' | 'deactivated';
-    created_at: Date;
-    updated_at: Date;
-}
-
-// NEW: Media Table
-export interface DbMedia {
-    id: string;
-    user_id: string;
-    file_type: 'profile_photo' | 'package_photo';
-    file_name: string;
-    url: string; // In a real app, this would be a URL to S3, GCS, etc.
-    created_at: Date;
-}
-
-// NEW: User Settings Table
-export interface DbUserSettings {
-    user_id: string;
-    language: string; // e.g., 'en', 'tw'
-    theme: 'light' | 'dark' | 'system';
-    default_payment_method: string | null;
-    default_address_id: string | null; // Assuming address book feature in future
-}
-
-// NEW: Privacy Settings Table
-export interface DbPrivacySettings {
-    user_id: string;
-    share_location: boolean;
-    data_collection_consent: boolean;
-}
-
-
-// NEW: Notification Preferences Table
-interface DbNotificationPreferences {
-    user_id: string;
-    // FIX: Added missing properties to align with UserProfile type.
-    orderUpdates: boolean;
-    promotions: boolean;
-    push_enabled: boolean;
-    sms_enabled: boolean;
-    email_enabled: boolean;
-    whatsapp_enabled: boolean;
-    quiet_hours_start: string | null; // "HH:MM"
-    quiet_hours_end: string | null;   // "HH:MM"
-}
-
-export interface DbOrder {
-    id: string;
-    customer_id: string;
-    partner_id: string | null; // NEW: To link a delivery partner
-    pickup_location: LocationInfo;
-    delivery_location: LocationInfo;
-    service_type: ServiceCategory;
-    package_description: string | null;
-    weight: string | null;
-    special_instructions: string | null;
-    recipient_phone: string | null;
-    price_breakdown: PriceBreakdown;
-    status: OrderStatus;
-    created_at: Date;
-    updated_at: Date;
-}
-
-export interface DbOrderTracking {
-    id: string;
-    order_id: string;
-    latitude: number;
-    longitude: number;
-    status: string;
-    timestamp: Date;
-}
-
-export interface DbOrderRating {
-    id: string;
-    order_id: string;
-    customer_id: string;
-    partner_id: string;
-    rating: number;
-    review: string | null;
-    created_at: Date;
-}
-
-// NEW: For public-facing rating data
-export interface PublicRating {
-    reviewerName: string;
-    rating: number;
-    review: string | null;
-    date: string;
-}
-
-interface DbOrderDispute {
-    id: string;
-    order_id: string;
-    customer_id: string;
-    reason: string;
-    description: string;
-    status: 'open' | 'in_progress' | 'resolved';
-    created_at: Date;
-    resolved_at: Date | null;
-}
-
-// NEW: Delivery Partner Interface
-interface DbPartner {
-    id: string;
-    name: string;
-    phone: string;
-    vehicle_type: 'Motorbike' | 'Van' | 'Truck';
-    current_latitude: number;
-    current_longitude: number;
-    is_available: boolean;
-    rating: number;
-    total_deliveries: number;
-}
-
-// NEW: Partner Availability Interface
-interface DbPartnerAvailability {
-    partner_id: string;
-    day_of_week: number; // 0 for Sunday, 1 for Monday, etc.
-    start_time: string;  // "HH:MM" format (24-hour)
-    end_time: string;    // "HH:MM" format (24-hour)
-}
-
-// NEW: Chat Message Interface
-interface DbChatMessage {
-    id: string;
-    order_id: string;
-    sender_id: string; // Can be a customer or partner ID
-    sender_type: 'customer' | 'partner';
-    message: string;
-    timestamp: Date;
-    read_at: Date | null;
-}
-
-// NEW: Call Log Interface
-interface DbCallLog {
-    id: string;
-    order_id: string;
-    caller_id: string;
-    receiver_id: string;
-    duration: number; // in seconds
-    timestamp: Date;
-}
-
-// UPDATED: Device Token Interface
-interface DbDeviceToken {
-    id: string;
-    user_id: string;
-    token: string; // The FCM or other push service token
-    platform: 'web' | 'ios' | 'android'; // NEW
-    created_at: Date;
-}
-
-// UPDATED: Notification Log Interface
-interface DbNotificationLog {
-    id: string;
-    user_id: string;
-    type: 'order_status' | 'promotion' | 'account' | 'chat_message'; // NEW
-    title: string;
-    body: string;
-    sent_at: Date; // RENAMED from created_at
-    read_at: Date | null; // UPDATED from boolean
-}
-
-// NEW: Event Log Interface (replaces AnalyticsEvent)
-interface DbEventLog {
-    id: string;
-    user_id: string;
-    event_type: string;
-    event_data: object;
-    timestamp: Date;
-}
-
-// NEW: User Analytics Interface
-export interface DbUserAnalytics {
-    user_id: string;
-    total_orders: number;
-    total_spent: number;
-    average_rating_given: number | null;
-    last_order_at: Date | null;
-}
-
-// NEW: Support Ticket Interface
-interface DbSupportTicket {
-    id: string;
-    user_id: string;
-    subject: string;
-    description: string;
-    status: SupportTicketStatus;
-    priority: SupportTicketPriority;
-    created_at: Date;
-    updated_at: Date;
-}
-
-// NEW: Support Message Interface
-interface DbSupportMessage {
-    id: string;
-    ticket_id: string;
-    sender_id: string; // user_id or 'agent_id'
-    sender_type: 'customer' | 'agent';
-    message: string;
-    timestamp: Date;
-}
 
 
 // --- IN-MEMORY DATA STORES ("TABLES") ---

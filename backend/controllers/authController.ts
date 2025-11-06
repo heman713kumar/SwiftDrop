@@ -1,20 +1,35 @@
+// File: controllers/authController.ts
 
 import { Request, Response } from 'express';
 import * as db from '../db';
 import * as jwt from '../jwt';
-import { UserProfile } from '../types';
+// FIX: Imports the correct DTO names.
+import { UserProfile, DbUser, DbNotificationPreferences } from '../types';
 import { AuthenticatedRequest, FirebaseAuthenticatedRequest } from '../middleware/auth';
 
+// FIX B: Define the incomplete notification preferences object here for use as a fallback.
+const incompleteNotifPrefs: DbNotificationPreferences = {
+    user_id: '', // Placeholder, will be ignored by the controller logic
+    orderUpdates: true,
+    promotions: true,
+    push_enabled: true,
+    sms_enabled: true,
+    email_enabled: true,
+    whatsapp_enabled: false,
+    quiet_hours_start: null,
+    quiet_hours_end: null,
+};
+
+
 // POST /api/auth/verify-firebase-token
-// Fix: Use namespace-qualified express types to avoid global type conflicts.
-// FIX: Import Request and Response from express to fix type errors
 export const verifyFirebaseToken = async (req: Request, res: Response) => {
     const { idToken } = req.body;
 
     try {
         const decodedToken = await jwt.verifyFirebaseToken(idToken);
         
-        let user: db.DbUser | undefined;
+        // FIX A: Corrected type usage
+        let user: DbUser | undefined;
         let isNewUser = false;
         
         if (decodedToken.phone_number) {
@@ -33,7 +48,8 @@ export const verifyFirebaseToken = async (req: Request, res: Response) => {
             return res.status(200).json({ isNewUser: true, message: 'User not found. Please complete registration.', accessToken, refreshToken });
         }
 
-        const notificationPreferences = db.findNotificationPreferencesByUserId(user.id) || { orderUpdates: true, promotions: true };
+        // FIX B: Use the complete fallback object to satisfy the UserProfile type definition
+        const notificationPreferences = db.findNotificationPreferencesByUserId(user.id) || { ...incompleteNotifPrefs, user_id: user.id };
         const accessToken = jwt.createToken({ userId: user.id, purpose: 'access' }, '15m');
         const refreshToken = jwt.createToken({ userId: user.id, purpose: 'refresh' }, '7d');
 
@@ -62,8 +78,6 @@ export const verifyFirebaseToken = async (req: Request, res: Response) => {
 
 
 // POST /api/auth/register
-// Fix: Use namespace-qualified express types to avoid global type conflicts.
-// FIX: Import Request and Response from express to fix type errors
 export const register = (req: Request, res: Response) => {
     const { fullName, email, photoUrl } = req.body;
     const decodedToken = (req as FirebaseAuthenticatedRequest).firebaseUser;
@@ -90,7 +104,8 @@ export const register = (req: Request, res: Response) => {
         googleId: decodedToken.firebase.sign_in_provider === 'google.com' ? decodedToken.uid : null,
     });
 
-    const notificationPreferences = db.findNotificationPreferencesByUserId(newUser.id) || { orderUpdates: true, promotions: true };
+    // FIX B: Use the complete fallback object to satisfy the UserProfile type definition
+    const notificationPreferences = db.findNotificationPreferencesByUserId(newUser.id) || { ...incompleteNotifPrefs, user_id: newUser.id };
     const accessToken = jwt.createToken({ userId: newUser.id, purpose: 'access' }, '15m');
     const refreshToken = jwt.createToken({ userId: newUser.id, purpose: 'refresh' }, '7d');
 
@@ -113,8 +128,6 @@ export const register = (req: Request, res: Response) => {
 
 
 // POST /api/auth/logout
-// Fix: Use namespace-qualified express types to avoid global type conflicts.
-// FIX: Import Request and Response from express to fix type errors
 export const logout = (req: Request, res: Response) => {
     const token = req.headers.authorization?.split(' ')[1];
     const { refreshToken } = req.body;
@@ -136,8 +149,6 @@ export const logout = (req: Request, res: Response) => {
 };
 
 // POST /api/auth/refresh-token
-// Fix: Use namespace-qualified express types to avoid global type conflicts.
-// FIX: Import Request and Response from express to fix type errors
 export const refreshToken = (req: Request, res: Response) => {
     const { refreshToken: oldRefreshToken } = req.body;
     if (!oldRefreshToken) {
@@ -178,8 +189,6 @@ export const refreshToken = (req: Request, res: Response) => {
 };
 
 // POST /api/auth/forgot-password
-// Fix: Use namespace-qualified express types to avoid global type conflicts.
-// FIX: Import Request and Response from express to fix type errors
 export const forgotPassword = (req: Request, res: Response) => {
     const { email } = req.body;
     if (!email) {
@@ -205,8 +214,6 @@ export const forgotPassword = (req: Request, res: Response) => {
 };
 
 // POST /api/auth/reset-password
-// Fix: Use namespace-qualified express types to avoid global type conflicts.
-// FIX: Import Request and Response from express to fix type errors
 export const resetPassword = (req: Request, res: Response) => {
     const { token, newPassword } = req.body;
 

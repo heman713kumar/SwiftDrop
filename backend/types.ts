@@ -1,18 +1,13 @@
 // File: backend/types.ts
-// FINAL SHARED TYPE DEFINITIONS
+// FINAL SHARED TYPE DEFINITIONS (Comprehensive Version)
 
 import { DecodedIdToken } from 'firebase-admin/auth';
 import { Request } from 'express';
 
 // ===============================================
-// === DATABASE INTERFACES (MUST BE EXPORTED) ====
+// === ENUMS & SIMPLE TYPES ======================
 // ===============================================
 
-// NOTE: These interfaces are typically defined in db.ts and EXPORTED from there.
-// If your current setup prevents importing DbUser/DbOrder into controllers, 
-// we must define the final DTOs and required types here.
-
-// Used in supportController and db.ts
 export enum SupportTicketStatus {
     Open = 'Open',
     Pending = 'Pending',
@@ -25,18 +20,217 @@ export enum SupportTicketPriority {
     High = 'High',
 }
 
+export type OrderStatus = 'Placed' | 'Assigned' | 'On The Way' | 'Delivered' | 'Cancelled' | 'Completed';
+export type ServiceCategory = 'Express' | 'Standard' | 'Truck';
+
+
 // ===============================================
-// === TYPES REQUIRED by db.ts (The Failing Imports) ===
+// === DATABASE INTERFACES (Used Everywhere) =====
 // ===============================================
 
-// FIX: Added missing LocationInfo properties (lat/lng) to match db.ts usage.
-export interface LocationInfo {
-    address: string;
-    lat: number; 
-    lng: number; 
+// DbUser and DbOrder are needed by controllers and db.ts, so they live here.
+export interface DbUser {
+    id: string;
+    phone: string | null;
+    email: string;
+    name: string;
+    password_hash: string | null;
+    profile_photo_url: string | null;
+    auth_provider: 'phone' | 'google';
+    google_id: string | null;
+    phone_verified: boolean;
+    status: 'active' | 'deactivated';
+    created_at: Date;
+    updated_at: Date;
 }
 
-// FIX: Added missing OrderDetails properties to match db.ts usage.
+export interface DbOrder {
+    id: string;
+    customer_id: string;
+    partner_id: string | null;
+    pickup_location: LocationInfo;
+    delivery_location: LocationInfo;
+    service_type: ServiceCategory;
+    package_description: string | null;
+    weight: string | null;
+    special_instructions: string | null;
+    recipient_phone: string | null;
+    price_breakdown: PriceBreakdown;
+    status: OrderStatus;
+    created_at: Date;
+    updated_at: Date;
+}
+
+// These interfaces (and all others below) are now guaranteed to be exported.
+
+export interface DbMedia {
+    id: string;
+    user_id: string;
+    file_type: 'profile_photo' | 'package_photo';
+    file_name: string;
+    url: string;
+    created_at: Date;
+}
+
+export interface DbUserSettings {
+    user_id: string;
+    language: string;
+    theme: 'light' | 'dark' | 'system';
+    default_payment_method: string | null;
+    default_address_id: string | null;
+}
+
+export interface DbPrivacySettings {
+    user_id: string;
+    share_location: boolean;
+    data_collection_consent: boolean;
+}
+
+export interface DbNotificationPreferences {
+    user_id: string;
+    orderUpdates: boolean;
+    promotions: boolean;
+    push_enabled: boolean;
+    sms_enabled: boolean;
+    email_enabled: boolean;
+    whatsapp_enabled: boolean;
+    quiet_hours_start: string | null;
+    quiet_hours_end: string | null;
+}
+
+export interface DbOrderTracking {
+    id: string;
+    order_id: string;
+    latitude: number;
+    longitude: number;
+    status: string;
+    timestamp: Date;
+}
+
+export interface DbOrderRating {
+    id: string;
+    order_id: string;
+    customer_id: string;
+    partner_id: string;
+    rating: number;
+    review: string | null;
+    created_at: Date;
+}
+
+export interface DbOrderDispute {
+    id: string;
+    order_id: string;
+    customer_id: string;
+    reason: string;
+    description: string;
+    status: 'open' | 'in_progress' | 'resolved';
+    created_at: Date;
+    resolved_at: Date | null;
+}
+
+export interface DbPartner {
+    id: string;
+    name: string;
+    phone: string;
+    vehicle_type: 'Motorbike' | 'Van' | 'Truck';
+    current_latitude: number;
+    current_longitude: number;
+    is_available: boolean;
+    rating: number;
+    total_deliveries: number;
+}
+
+export interface DbPartnerAvailability {
+    partner_id: string;
+    day_of_week: number;
+    start_time: string;
+    end_time: string;
+}
+
+export interface DbChatMessage {
+    id: string;
+    order_id: string;
+    sender_id: string;
+    sender_type: 'customer' | 'partner';
+    message: string;
+    timestamp: Date;
+    read_at: Date | null;
+}
+
+export interface DbCallLog {
+    id: string;
+    order_id: string;
+    caller_id: string;
+    receiver_id: string;
+    duration: number;
+    timestamp: Date;
+}
+
+export interface DbDeviceToken {
+    id: string;
+    user_id: string;
+    token: string;
+    platform: 'web' | 'ios' | 'android';
+    created_at: Date;
+}
+
+export interface DbNotificationLog {
+    id: string;
+    user_id: string;
+    type: 'order_status' | 'promotion' | 'account' | 'chat_message';
+    title: string;
+    body: string;
+    sent_at: Date;
+    read_at: Date | null;
+}
+
+export interface DbEventLog {
+    id: string;
+    user_id: string;
+    event_type: string;
+    event_data: object;
+    timestamp: Date;
+}
+
+export interface DbUserAnalytics {
+    user_id: string;
+    total_orders: number;
+    total_spent: number;
+    average_rating_given: number | null;
+    last_order_at: Date | null;
+}
+
+export interface DbSupportTicket {
+    id: string;
+    user_id: string;
+    subject: string;
+    description: string;
+    status: SupportTicketStatus;
+    priority: SupportTicketPriority;
+    created_at: Date;
+    updated_at: Date;
+}
+
+export interface SupportMessage {
+    id: string;
+    ticketId: string;
+    senderId: string;
+    senderType: 'customer' | 'agent';
+    message: string;
+    // FIX D: Change type to string to match toISOString() usage in controller
+    timestamp: string; 
+}
+
+// ===============================================
+// === DTOs and Primitives (Used by db.ts imports) ===
+// ===============================================
+
+export interface LocationInfo {
+    address: string;
+    lat: number;
+    lng: number;
+}
+
 export interface PackageDetails {
     description: string;
     weight: string;
@@ -45,7 +239,6 @@ export interface PackageDetails {
     specialInstructions: string | null;
 }
 
-// FIX: Added missing PriceBreakdown properties to match db.ts usage.
 export interface PriceBreakdown {
     baseFare: number;
     serviceFee: number;
@@ -54,22 +247,14 @@ export interface PriceBreakdown {
     total: number;
 }
 
-// FIX: Added OrderStatus type definition
-export type OrderStatus = 'Placed' | 'Assigned' | 'On The Way' | 'Delivered' | 'Cancelled' | 'Completed';
-
-// FIX: Added ServiceCategory type definition
-export type ServiceCategory = 'Express' | 'Standard' | 'Truck';
-
-// FIX: Added OrderDetails interface definition
-export interface OrderDetails {
-    serviceType: ServiceCategory;
-    pickupLocation: LocationInfo;
-    deliveryLocation: LocationInfo;
-    packageDetails?: PackageDetails;
-    priceBreakdown: PriceBreakdown;
+export interface UserProfile {
+    fullName: string;
+    email: string;
+    photo: string | null;
+    // FIX E: Corrected name to the actual interface name
+    notificationPreferences: DbNotificationPreferences; 
 }
 
-// FIX: Added OrderHistoryItem interface definition
 export interface OrderHistoryItem {
     id: string;
     date: string;
@@ -80,44 +265,12 @@ export interface OrderHistoryItem {
     status: OrderStatus;
 }
 
-// FIX: Added SupportTicketStatus and SupportTicketPriority exports (from enums above)
-// FIX: Added SupportMessage interface definition
-export interface SupportMessage {
-    id: string;
-    ticketId: string;
-    senderId: string;
-    senderType: 'customer' | 'agent';
-    message: string;
-    timestamp: string; 
-}
-
-// FIX: Added SupportTicket interface definition
-export interface SupportTicket {
-    id: string;
-    userId: string;
-    subject: string;
-    description: string;
-    status: SupportTicketStatus;
-    priority: SupportTicketPriority;
-    createdAt: string; 
-    updatedAt: string; 
-    messages: SupportMessage[];
-}
-
-// FIX: Added FaqItem interface definition
-export interface FaqItem {
-    id: string;
-    question: string;
-    answer: string;
-    category: string;
-}
-
-// NEW: Missing from db.ts import list, but used in other controllers/db code
 export interface UserProfile {
     fullName: string;
     email: string;
     photo: string | null;
-    notificationPreferences: NotificationPreferences;
+    // FIX E: Corrected name to match the exported type name
+    notificationPreferences: DbNotificationPreferences;
 }
 
 export interface UserStats {
@@ -127,26 +280,17 @@ export interface UserStats {
     lastOrderDate: string | null;
 }
 
-export interface NotificationPreferences {
-    orderUpdates: boolean;
-    promotions: boolean;
-    push_enabled?: boolean;
-    sms_enabled?: boolean;
-    email_enabled?: boolean;
-    whatsapp_enabled?: boolean;
-    quiet_hours_start?: string | null;
-    quiet_hours_end?: string | null;
+export interface FaqItem {
+    id: string;
+    question: string;
+    answer: string;
+    category: string;
 }
 
-// --- REQUEST MIDDLEWARE TYPES ---
-
 export interface AuthenticatedRequest extends Request {
-    user?: { id: string; [key: string]: any }; 
+    user?: { id: string; [key: string]: any };
 }
 
 export interface FirebaseAuthenticatedRequest extends Request {
     firebaseUser?: DecodedIdToken;
 }
-
-// (The remaining missing types from db.ts's import line, like DbUser, DbOrder, etc., 
-// are now correctly defined inside db.ts and EXPORTED from there, or are defined above.)

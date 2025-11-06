@@ -19,7 +19,18 @@ export const getProfile = (req: Request, res: Response) => {
         return res.status(404).json({ message: 'User not found' });
     }
     
-    const notificationPreferences = db.findNotificationPreferencesByUserId(userId) || { orderUpdates: true, promotions: true };
+	const defaultNotifPrefs = { 
+    user_id: 'default',
+    orderUpdates: true,
+    promotions: true,
+    push_enabled: true,
+    sms_enabled: true,
+    email_enabled: true,
+    whatsapp_enabled: false,
+    quiet_hours_start: null,
+    quiet_hours_end: null,
+};
+    const notificationPreferences = db.findNotificationPreferencesByUserId(userId) || defaultNotifPrefs;
 
 
     const userProfile: UserProfile = {
@@ -46,7 +57,7 @@ export const updateProfile = (req: Request, res: Response) => {
         return res.status(404).json({ message: 'User not found' });
     }
     
-    const notificationPreferences = db.findNotificationPreferencesByUserId(userId) || { orderUpdates: true, promotions: true };
+    const notificationPreferences = db.findNotificationPreferencesByUserId(userId) || defaultNotifPrefs;
 
     const userProfile: UserProfile = {
         fullName: updatedDbUser.name,

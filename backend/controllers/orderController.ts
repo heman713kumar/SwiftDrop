@@ -1,8 +1,8 @@
 
 import { Request, Response } from 'express';
 import * as db from '../db';
-// FIX: Change path from '../types' to '../types'
-import { TrackingPoint } from '../types'; 
+// FIX E: Import the correct Db name and rename it for local DTO use
+import { DbOrderTracking as TrackingPoint } from '../types'; 
 import { AuthenticatedRequest } from '../middleware/auth';
 import { broadcast } from '../websocket';
 import { addNotificationToQueue } from '../queues';
@@ -110,11 +110,14 @@ export const getTracking = (req: Request, res: Response) => {
     }
 
     const history = db.findOrderTrackingHistory(orderId);
+    // FIX: Map all required fields for DbOrderTracking
     const trackingHistory: TrackingPoint[] = history.map(h => ({
+        id: h.id, // ADDED
+        order_id: h.order_id, // ADDED
         latitude: h.latitude,
         longitude: h.longitude,
         status: h.status,
-        timestamp: h.timestamp.toISOString()
+        timestamp: h.timestamp.toISOString() // This is safe because DbOrderTracking uses Date
     }));
     
     const trackingData = {
