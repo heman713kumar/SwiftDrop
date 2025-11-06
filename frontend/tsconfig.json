@@ -5,12 +5,17 @@
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": false,
     "skipLibCheck": true,
-    "esModuleInterop": false,
+    "esModuleInterop": true,              // CHANGED: Set to true for better compatibility
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
+    
+    // --- FIX FOR TS5097 ERROR ---
+    "allowImportingTsExtensions": true,   // ADDED: Allows importing files with .ts/.tsx extensions
     "moduleResolution": "bundler",
+    // ----------------------------
+    
+    "module": "ESNext",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
