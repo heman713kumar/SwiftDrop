@@ -104,7 +104,7 @@ export interface DbOrderTracking {
     latitude: number;
     longitude: number;
     status: string;
-    timestamp: Date;
+    timestamp: string; // FIX B: Changed from Date to string
 }
 
 export interface DbOrderRating {

@@ -1,14 +1,20 @@
 // This file manages the connection to the PostgreSQL database.
+// File: db.ts (Initial import block)
+
+// ... (lines 1-4)
 import { Pool } from 'pg';
 import { v4 as uuidv4 } from 'uuid';
-// FIX: Removed the DTO aliases (SupportTicket, SupportMessage) that were causing conflicts, 
-// and imported all Db interfaces and the PublicRating DTO directly.
+// FIX D: Keep only the complex interfaces that are used (or rely on other imports)
 import { 
-    UserProfile, OrderDetails, ServiceCategory, LocationInfo, PackageDetails, PriceBreakdown, OrderStatus, OrderHistoryItem, UserStats, 
+    // Removed UserProfile, OrderDetails, ServiceCategory, etc. 
+    // They are defined later in this same list or causing circular issues.
     SupportTicketStatus, SupportTicketPriority, FaqItem, 
-    PublicRating, // CORRECT NAME
-    DbUser, DbMedia, DbUserSettings, DbPrivacySettings, DbNotificationPreferences, DbOrder, DbOrderTracking, DbOrderRating, DbOrderDispute, DbPartner, DbPartnerAvailability, DbChatMessage, DbCallLog, DbDeviceToken, DbNotificationLog, DbEventLog, DbUserAnalytics, DbSupportTicket, DbSupportMessage
-} from './types';
+    PublicRating, DbUser, DbMedia, DbUserSettings, DbPrivacySettings, DbNotificationPreferences, DbOrder, DbOrderTracking, DbOrderRating, DbOrderDispute, DbPartner, DbPartnerAvailability, DbChatMessage, DbCallLog, DbDeviceToken, DbNotificationLog, DbEventLog, DbUserAnalytics, DbSupportTicket, DbSupportMessage, 
+    // Added the simple DTOs back into the import list, ensuring DbUser/DbOrder are present.
+    UserProfile, OrderDetails, ServiceCategory, LocationInfo, PackageDetails, PriceBreakdown, OrderStatus, OrderHistoryItem, UserStats
+} from './types'; 
+
+// ... (rest of the file)
 
 
 // These values are now read from environment variables, which will be set by Cloud Run Secrets.

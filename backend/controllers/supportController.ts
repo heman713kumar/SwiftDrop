@@ -61,8 +61,8 @@ export const getTicketDetails = (req: Request, res: Response) => {
     // Combine ticket info with its messages
     const ticketDetails: SupportTicket = {
         id: ticket.id,
-        // FIX: The DTO uses userId, which is correct for the DTO
-        userId: ticket.user_id, 
+        // FIX C: Use the correct lowercase DB property name: user_id
+        user_id: ticket.user_id, 
         subject: ticket.subject,
         description: ticket.description,
         status: ticket.status,
