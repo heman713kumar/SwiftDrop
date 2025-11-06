@@ -2,7 +2,8 @@
 import { Request, Response } from 'express';
 import * as db from '../db';
 import { AuthenticatedRequest } from '../middleware/auth';
-import { User, Order } from '../types';
+// FIX: Change 'User' to 'DbUser', 'Order' to 'DbOrder', and add 'UserStats'
+import { DbUser, DbOrder, UserStats } from '../types';
 import { addAnalyticsJobToQueue } from '../queues';
 
 // GET /api/analytics/user-stats

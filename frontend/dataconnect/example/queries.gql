@@ -1,0 +1,46 @@
+mutation CreateUser @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+  user_insert(data: {
+    displayName: "New User",
+    email: "newuser@example.com",
+    phoneNumber: "555-123-4567",
+    userType: "customer"
+  })
+}
+
+query ListDeliveries @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+  deliveries {
+    id
+    pickupAddress
+    dropoffAddress
+    status
+  }
+}
+
+mutation UpdateDeliveryStatus($id: UUID!, $status: String!) @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+  delivery_update(
+    id: $id,
+    data: {
+      status: $status
+    }
+  )
+}
+
+query GetDeliveryDetails($id: UUID!) @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+  delivery(id: $id) {
+    id
+    pickupAddress
+    dropoffAddress
+    status
+    itemDescription
+    estimatedCost
+    actualCost
+    customer {
+      displayName
+      phoneNumber
+    }
+    agent {
+      displayName
+      phoneNumber
+    }
+  }
+}

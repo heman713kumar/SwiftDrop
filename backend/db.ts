@@ -1,6 +1,6 @@
 
 import { v4 as uuidv4 } from 'uuid';
-import { UserProfile, OrderDetails, ServiceCategory, LocationInfo, PackageDetails, PriceBreakdown, OrderStatus, OrderHistoryItem, UserStats, SupportTicketStatus, SupportTicketPriority, FaqItem, SupportTicket, SupportMessage } from '../types';
+import { UserProfile, OrderDetails, ServiceCategory, LocationInfo, PackageDetails, PriceBreakdown, OrderStatus, OrderHistoryItem, UserStats, SupportTicketStatus, SupportTicketPriority, FaqItem, SupportTicket, SupportMessage } from './types';
 
 // ===================================================================================
 // == PRODUCTION DATABASE ARCHITECTURE NOTE
@@ -46,7 +46,7 @@ export interface DbUser {
 }
 
 // NEW: Media Table
-interface DbMedia {
+export interface DbMedia {
     id: string;
     user_id: string;
     file_type: 'profile_photo' | 'package_photo';
@@ -56,7 +56,7 @@ interface DbMedia {
 }
 
 // NEW: User Settings Table
-interface DbUserSettings {
+export interface DbUserSettings {
     user_id: string;
     language: string; // e.g., 'en', 'tw'
     theme: 'light' | 'dark' | 'system';
@@ -65,7 +65,7 @@ interface DbUserSettings {
 }
 
 // NEW: Privacy Settings Table
-interface DbPrivacySettings {
+export interface DbPrivacySettings {
     user_id: string;
     share_location: boolean;
     data_collection_consent: boolean;
@@ -86,7 +86,7 @@ interface DbNotificationPreferences {
     quiet_hours_end: string | null;   // "HH:MM"
 }
 
-interface DbOrder {
+export interface DbOrder {
     id: string;
     customer_id: string;
     partner_id: string | null; // NEW: To link a delivery partner
@@ -103,7 +103,7 @@ interface DbOrder {
     updated_at: Date;
 }
 
-interface DbOrderTracking {
+export interface DbOrderTracking {
     id: string;
     order_id: string;
     latitude: number;
@@ -112,7 +112,7 @@ interface DbOrderTracking {
     timestamp: Date;
 }
 
-interface DbOrderRating {
+export interface DbOrderRating {
     id: string;
     order_id: string;
     customer_id: string;
@@ -213,7 +213,7 @@ interface DbEventLog {
 }
 
 // NEW: User Analytics Interface
-interface DbUserAnalytics {
+export interface DbUserAnalytics {
     user_id: string;
     total_orders: number;
     total_spent: number;

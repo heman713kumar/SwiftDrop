@@ -1,84 +1,110 @@
 // File: backend/types.ts
-// Shared Type Definitions for the Backend Application
+// FINAL SHARED TYPE DEFINITIONS
 
 import { DecodedIdToken } from 'firebase-admin/auth';
+import { Request } from 'express';
 
-// --- DATABASE TYPES (USED INTERNALLY BY DB MOCK) ---
+// ===============================================
+// === DATABASE INTERFACES (MUST BE EXPORTED) ====
+// ===============================================
 
-export interface DbUser {
-    id: string;
-    phone: string | null;
-    email: string;
-    name: string;
-    profile_photo_url: string | null;
-    auth_provider: 'google' | 'phone';
-    google_id: string | null;
-    created_at: Date;
-    updated_at: Date;
-    is_active: boolean;
-    password_hash: string | null;
+// NOTE: These interfaces are typically defined in db.ts and EXPORTED from there.
+// If your current setup prevents importing DbUser/DbOrder into controllers, 
+// we must define the final DTOs and required types here.
+
+// Used in supportController and db.ts
+export enum SupportTicketStatus {
+    Open = 'Open',
+    Pending = 'Pending',
+    Closed = 'Closed',
 }
 
-export interface DbOrder {
-    id: string;
-    customer_id: string;
-    partner_id: string | null;
-    status: 'Placed' | 'Assigned' | 'On The Way' | 'Delivered' | 'Cancelled' | 'Completed';
-    service_type: string;
-    pickup_location: { lat: number, lng: number };
-    delivery_location: { lat: number, lng: number };
-    price_breakdown: any;
-    created_at: Date;
+export enum SupportTicketPriority {
+    Low = 'Low',
+    Medium = 'Medium',
+    High = 'High',
 }
 
-// --- CONTROLLER DTOs (Data Transfer Objects) ---
+// ===============================================
+// === TYPES REQUIRED by db.ts (The Failing Imports) ===
+// ===============================================
 
-// Used in userController and authController
-export interface UserProfile {
-    fullName: string;
-    email: string;
-    photo: string | null;
-    notificationPreferences: NotificationPreferences;
+// FIX: Added missing LocationInfo properties (lat/lng) to match db.ts usage.
+export interface LocationInfo {
+    address: string;
+    lat: number; 
+    lng: number; 
 }
 
-// Used in analyticsController
-export interface UserStats {
-    totalOrders: number;
-    totalSpent: number;
-    averageRatingGiven: number | null;
-    lastOrderDate: string | null;
-}
-
-// Used in orderController (for tracking history)
-export interface TrackingPoint {
-    latitude: number;
-    longitude: number;
-    status: string;
-    timestamp: string;
-}
-
-// Used in supportController
-export interface SupportTicket {
-    id: string;
-    userId: string;
-    subject: string;
+// FIX: Added missing OrderDetails properties to match db.ts usage.
+export interface PackageDetails {
     description: string;
-    status: 'Open' | 'Pending' | 'Closed';
-    priority: 'Low' | 'Medium' | 'High';
-    createdAt: string;
-    updatedAt: string;
-    messages: SupportMessage[];
+    weight: string;
+    recipientName: string;
+    recipientPhoneNumber: string;
+    specialInstructions: string | null;
 }
 
+// FIX: Added missing PriceBreakdown properties to match db.ts usage.
+export interface PriceBreakdown {
+    baseFare: number;
+    serviceFee: number;
+    tax: number;
+    discount: number;
+    total: number;
+}
+
+// FIX: Added OrderStatus type definition
+export type OrderStatus = 'Placed' | 'Assigned' | 'On The Way' | 'Delivered' | 'Cancelled' | 'Completed';
+
+// FIX: Added ServiceCategory type definition
+export type ServiceCategory = 'Express' | 'Standard' | 'Truck';
+
+// FIX: Added OrderDetails interface definition
+export interface OrderDetails {
+    serviceType: ServiceCategory;
+    pickupLocation: LocationInfo;
+    deliveryLocation: LocationInfo;
+    packageDetails?: PackageDetails;
+    priceBreakdown: PriceBreakdown;
+}
+
+// FIX: Added OrderHistoryItem interface definition
+export interface OrderHistoryItem {
+    id: string;
+    date: string;
+    serviceType: ServiceCategory;
+    pickupAddress: string;
+    deliveryAddress: string;
+    totalPrice: number;
+    status: OrderStatus;
+}
+
+// FIX: Added SupportTicketStatus and SupportTicketPriority exports (from enums above)
+// FIX: Added SupportMessage interface definition
 export interface SupportMessage {
     id: string;
     ticketId: string;
     senderId: string;
     senderType: 'customer' | 'agent';
     message: string;
-    timestamp: string;
+    timestamp: string; 
 }
 
+// FIX: Added SupportTicket interface definition
+export interface SupportTicket {
+    id: string;
+    userId: string;
+    subject: string;
+    description: string;
+    status: SupportTicketStatus;
+    priority: SupportTicketPriority;
+    createdAt: string; 
+    updatedAt: string; 
+    messages: SupportMessage[];
+}
+
+// FIX: Added FaqItem interface definition
 export interface FaqItem {
     id: string;
     question: string;
@@ -86,20 +112,41 @@ export interface FaqItem {
     category: string;
 }
 
-// --- AUTH & NOTIFICATION ---
+// NEW: Missing from db.ts import list, but used in other controllers/db code
+export interface UserProfile {
+    fullName: string;
+    email: string;
+    photo: string | null;
+    notificationPreferences: NotificationPreferences;
+}
 
-// Used in middleware/auth.ts and controllers
+export interface UserStats {
+    totalOrders: number;
+    totalSpent: number;
+    averageRatingGiven: number | null;
+    lastOrderDate: string | null;
+}
+
+export interface NotificationPreferences {
+    orderUpdates: boolean;
+    promotions: boolean;
+    push_enabled?: boolean;
+    sms_enabled?: boolean;
+    email_enabled?: boolean;
+    whatsapp_enabled?: boolean;
+    quiet_hours_start?: string | null;
+    quiet_hours_end?: string | null;
+}
+
+// --- REQUEST MIDDLEWARE TYPES ---
+
 export interface AuthenticatedRequest extends Request {
-    user?: DbUser;
+    user?: { id: string; [key: string]: any }; 
 }
 
 export interface FirebaseAuthenticatedRequest extends Request {
     firebaseUser?: DecodedIdToken;
 }
 
-export interface NotificationPreferences {
-    orderUpdates: boolean;
-    promotions: boolean;
-}
-
-// Add any other types your application requires here!
+// (The remaining missing types from db.ts's import line, like DbUser, DbOrder, etc., 
+// are now correctly defined inside db.ts and EXPORTED from there, or are defined above.)

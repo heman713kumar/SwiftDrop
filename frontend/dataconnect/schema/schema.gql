@@ -1,0 +1,55 @@
+type User @table {
+  displayName: String!
+  email: String!
+  phoneNumber: String!
+  userType: String!
+  photoUrl: String
+  address: String
+  isActive: Boolean
+}
+
+type Delivery @table {
+  customer: User!
+  agent: User
+  itemId: UUID!
+  pickupAddress: String!
+  dropoffAddress: String!
+  status: String!
+  requestedAt: Timestamp!
+  itemDescription: String
+  estimatedCost: Float
+  actualCost: Float
+  completedAt: Timestamp
+}
+
+type Item @table {
+  delivery: Delivery!
+  name: String!
+  itemType: String!
+  weight: Float!
+  quantity: Int
+  dimensions: String
+  fragile: Boolean
+}
+
+type Rating @table {
+  delivery: Delivery!
+  customer: User!
+  agent: User
+  rating: Int!
+  createdAt: Timestamp!
+  comment: String
+}
+
+type Payment @table {
+  customer: User
+  agent: User
+  delivery: Delivery
+  amount: Float!
+  currency: String!
+  status: String!
+  transactionType: String!
+  createdAt: Timestamp!
+  paymentMethod: String
+  transactionId: String
+}

@@ -1,7 +1,8 @@
 
 import { Request, Response } from 'express';
 import * as db from '../db';
-import { TrackingPoint } from '../../types';
+// FIX: Change path from '../types' to '../types'
+import { TrackingPoint } from '../types'; 
 import { AuthenticatedRequest } from '../middleware/auth';
 import { broadcast } from '../websocket';
 import { addNotificationToQueue } from '../queues';

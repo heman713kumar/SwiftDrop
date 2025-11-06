@@ -1,0 +1,58 @@
+mutation CreateSeedData @transaction @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public") {
+  user_insertMany(data: [
+    {
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      displayName: "demouser1",
+      email: "demouser1@example.com",
+      phoneNumber: "555-123-4567",
+      userType: "customer"
+    },
+    {
+      id: "550e8400-e29b-41d4-a716-446655440001",
+      displayName: "demouser2",
+      email: "demouser2@example.com",
+      phoneNumber: "555-987-6543",
+      userType: "agent"
+    }
+  ])
+  delivery_insertMany(data: [
+    {
+      id: "650e8400-e29b-41d4-a716-446655440002",
+      customerId: "550e8400-e29b-41d4-a716-446655440000",
+      itemId: "750e8400-e29b-41d4-a716-446655440003",
+      pickupAddress: "123 Main St",
+      dropoffAddress: "456 Elm St",
+      requestedAt: "2024-01-20T10:00:00Z",
+      status: "pending"
+    }
+  ])
+  item_insertMany(data: [
+    {
+      id: "750e8400-e29b-41d4-a716-446655440003",
+      deliveryId: "650e8400-e29b-41d4-a716-446655440002",
+      name: "Large Box",
+      itemType: "electronics",
+      weight: 10.5
+    }
+  ])
+  payment_insertMany(data: [
+    {
+      id: "850e8400-e29b-41d4-a716-446655440004",
+      customerId: "550e8400-e29b-41d4-a716-446655440000",
+      deliveryId: "650e8400-e29b-41d4-a716-446655440002",
+      amount: 25.00,
+      createdAt: "2024-01-20T10:15:00Z",
+      currency: "USD",
+      transactionType: "credit"
+    }
+  ])
+  rating_insertMany(data: [
+    {
+      id: "950e8400-e29b-41d4-a716-446655440005",
+      customerId: "550e8400-e29b-41d4-a716-446655440000",
+      deliveryId: "650e8400-e29b-41d4-a716-446655440002",
+      rating: 5,
+      createdAt: "2024-01-20T11:00:00Z"
+    }
+  ])
+}

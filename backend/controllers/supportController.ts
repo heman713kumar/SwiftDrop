@@ -2,7 +2,8 @@
 import { Request, Response } from 'express';
 import * as db from '../db';
 import { AuthenticatedRequest } from '../middleware/auth';
-import { SupportTicket, SupportMessage, FaqItem } from '../../types';
+// FIX: Change path from '../../types' to '../types'
+import { SupportTicket, SupportMessage, FaqItem } from '../types';
 
 // POST /api/support/tickets
 // Fix: Use namespace-qualified express types to avoid global type conflicts.
