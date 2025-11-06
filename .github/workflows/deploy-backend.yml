@@ -9,7 +9,7 @@ on:
       - '.github/workflows/deploy-backend.yml'
 
 env:
-  PROJECT_ID: sdrop-authentication-project
+  PROJECT_ID: swiftdrop-476907
   SERVICE_NAME: swiftdrop-backend
   REGION: us-central1
 
