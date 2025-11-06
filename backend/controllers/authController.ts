@@ -2,7 +2,7 @@
 import { Request, Response } from 'express';
 import * as db from '../db';
 import * as jwt from '../jwt';
-import { UserProfile } from '../../types';
+import { UserProfile } from '../types';
 import { AuthenticatedRequest, FirebaseAuthenticatedRequest } from '../middleware/auth';
 
 // POST /api/auth/verify-firebase-token

@@ -2,7 +2,7 @@
 import { Request, Response } from 'express';
 import * as db from '../db';
 import { AuthenticatedRequest } from '../middleware/auth';
-import { User, Order } from '@types';
+import { User, Order } from '../types';
 import { addAnalyticsJobToQueue } from '../queues';
 
 // GET /api/analytics/user-stats

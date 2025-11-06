@@ -1,7 +1,7 @@
 
 import { Request, Response } from 'express';
 import * as db from '../db';
-import { UserProfile } from '../../types';
+import { UserProfile } from '../types';
 import { AuthenticatedRequest } from '../middleware/auth';
 
 // GET /api/users/profile
