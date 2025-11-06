@@ -1,13 +1,21 @@
+// File: backend/tsconfig.json
 {
   "compilerOptions": {
-    "target": "es2016",
-    "module": "commonjs",
+    "target": "ES2020",
+    "module": "CommonJS",
+    "rootDir": "./",
+    "outDir": "./dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "outDir": "./dist",
-    "rootDir": "."
+    // --- FIX A: Add Path Aliases ---
+    "baseUrl": ".",
+    "paths": {
+      "@types/*": ["types/*"] // Map import '@types/X' to 'types/X'
+    },
+    // --- FIX B: Allow JSON Imports ---
+    "resolveJsonModule": true 
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules"]
