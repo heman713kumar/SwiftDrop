@@ -4,14 +4,11 @@
 // ... (lines 1-4)
 import { Pool } from 'pg';
 import { v4 as uuidv4 } from 'uuid';
-// FIX D: Keep only the complex interfaces that are used (or rely on other imports)
+// FIX: Consolidated and corrected all imports from types.ts. Removed unused duplicated lines.
 import { 
-    // Removed UserProfile, OrderDetails, ServiceCategory, etc. 
-    // They are defined later in this same list or causing circular issues.
+    UserProfile, OrderDetails, ServiceCategory, LocationInfo, PackageDetails, PriceBreakdown, OrderStatus, OrderHistoryItem, UserStats, 
     SupportTicketStatus, SupportTicketPriority, FaqItem, 
-    PublicRating, DbUser, DbMedia, DbUserSettings, DbPrivacySettings, DbNotificationPreferences, DbOrder, DbOrderTracking, DbOrderRating, DbOrderDispute, DbPartner, DbPartnerAvailability, DbChatMessage, DbCallLog, DbDeviceToken, DbNotificationLog, DbEventLog, DbUserAnalytics, DbSupportTicket, DbSupportMessage, 
-    // Added the simple DTOs back into the import list, ensuring DbUser/DbOrder are present.
-    UserProfile, OrderDetails, ServiceCategory, LocationInfo, PackageDetails, PriceBreakdown, OrderStatus, OrderHistoryItem, UserStats
+    PublicRating, DbUser, DbMedia, DbUserSettings, DbPrivacySettings, DbNotificationPreferences, DbOrder, DbOrderTracking, DbOrderRating, DbOrderDispute, DbPartner, DbPartnerAvailability, DbChatMessage, DbCallLog, DbDeviceToken, DbNotificationLog, DbEventLog, DbUserAnalytics, DbSupportTicket, DbSupportMessage
 } from './types'; 
 
 // ... (rest of the file)
@@ -420,7 +417,7 @@ export const addOrderTrackingEvent = (orderId: string, lat: number, lng: number,
         latitude: lat,
         longitude: lng,
         status,
-        timestamp: new Date(),
+        timestamp: new Date(), // Keep as Date object
     };
     const history = orderTracking.get(orderId) || [];
     history.push(event);

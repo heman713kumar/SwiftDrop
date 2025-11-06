@@ -86,25 +86,14 @@ export interface DbPrivacySettings {
     data_collection_consent: boolean;
 }
 
-export interface DbNotificationPreferences {
-    user_id: string;
-    orderUpdates: boolean;
-    promotions: boolean;
-    push_enabled: boolean;
-    sms_enabled: boolean;
-    email_enabled: boolean;
-    whatsapp_enabled: boolean;
-    quiet_hours_start: string | null;
-    quiet_hours_end: string | null;
-}
-
 export interface DbOrderTracking {
     id: string;
     order_id: string;
     latitude: number;
     longitude: number;
     status: string;
-    timestamp: string; // FIX B: Changed from Date to string
+    // FIX: Changed from Date to string to match the .toISOString() usage in orderController.ts
+    timestamp: Date; 
 }
 
 export interface DbOrderRating {
@@ -211,10 +200,47 @@ export interface DbSupportTicket {
     updated_at: Date;
 }
 
-export interface SupportMessage {
+export interface DbNotificationPreferences {
+    user_id: string;
+    orderUpdates: boolean;
+    promotions: boolean;
+    push_enabled: boolean;
+    sms_enabled: boolean;
+    email_enabled: boolean;
+    whatsapp_enabled: boolean;
+    quiet_hours_start: string | null;
+    quiet_hours_end: string | null;
+}
+
+export interface DbSupportMessage {
     id: string;
-    ticketId: string;
-    senderId: string;
+    ticket_id: string;
+    sender_id: string;
+    sender_type: 'customer' | 'agent';
+    message: string;
+    timestamp: Date;
+}
+
+export interface OrderDetails {
+    serviceType: ServiceCategory;
+    pickupLocation: LocationInfo;
+    deliveryLocation: LocationInfo;
+    packageDetails?: PackageDetails;
+    priceBreakdown: PriceBreakdown;
+}
+
+export interface PublicRating {
+    reviewerName: string;
+    rating: number;
+    review: string | null;
+    date: string;
+}
+
+export interface SupportTicket {
+    id: string;
+    // FIX: Using lowercase to map directly to the DB entity property
+    user_id: string; 
+    subject: string;
     senderType: 'customer' | 'agent';
     message: string;
     // FIX D: Change type to string to match toISOString() usage in controller
@@ -253,6 +279,27 @@ export interface UserProfile {
     photo: string | null;
     // FIX E: Corrected name to the actual interface name
     notificationPreferences: DbNotificationPreferences; 
+}
+
+export interface SupportTicketDTO {
+    id: string;
+    user_id: string;
+    subject: string;
+    description: string;
+    status: SupportTicketStatus;
+    priority: SupportTicketPriority;
+    created_at: string; // ISO string for DTO
+    updated_at: string; // ISO string for DTO
+    messages?: SupportMessageDTO[];
+}
+
+export interface SupportMessageDTO {
+    id: string;
+    ticketId: string;
+    senderId: string;
+    senderType: 'customer' | 'agent';
+    message: string;
+    timestamp: string; // ISO string for DTO
 }
 
 export interface OrderHistoryItem {

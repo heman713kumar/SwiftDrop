@@ -110,14 +110,16 @@ export const getTracking = (req: Request, res: Response) => {
     }
 
     const history = db.findOrderTrackingHistory(orderId);
-    // FIX: Map all required fields for DbOrderTracking
+    // FIX: Map all required fields for DbOrderTracking, including id and order_id.
     const trackingHistory: TrackingPoint[] = history.map(h => ({
-        id: h.id, // ADDED
-        order_id: h.order_id, // ADDED
+        // These fields are required by the DbOrderTracking interface used as the DTO
+        id: h.id, 
+        order_id: h.order_id,
         latitude: h.latitude,
         longitude: h.longitude,
         status: h.status,
-        timestamp: h.timestamp.toISOString() // This is safe because DbOrderTracking uses Date
+        // timestamp is now string in types.ts, so this is correct.
+        timestamp: h.timestamp 
     }));
     
     const trackingData = {

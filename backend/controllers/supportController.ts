@@ -3,7 +3,13 @@ import { Request, Response } from 'express';
 import * as db from '../db';
 import { AuthenticatedRequest } from '../middleware/auth';
 // FIX: Correcting the DTO alias names to match the names exported from types.ts
-import { DbSupportTicket as SupportTicket, DbSupportMessage as SupportMessage, FaqItem } from '../types';
+import { 
+    DbSupportTicket as SupportTicket, 
+    DbSupportMessage as SupportMessage, 
+    SupportTicketDTO,
+    SupportMessageDTO,
+    FaqItem 
+} from '../types';
 
 // POST /api/support/tickets
 // Fix: Use namespace-qualified express types to avoid global type conflicts.
@@ -59,25 +65,24 @@ export const getTicketDetails = (req: Request, res: Response) => {
     const messages = db.findSupportMessagesByTicketId(ticketId);
     
     // Combine ticket info with its messages
-    const ticketDetails: SupportTicket = {
-        id: ticket.id,
-        // FIX C: Use the correct lowercase DB property name: user_id
-        user_id: ticket.user_id, 
-        subject: ticket.subject,
-        description: ticket.description,
-        status: ticket.status,
-        priority: ticket.priority,
-        createdAt: ticket.created_at.toISOString(),
-        updatedAt: ticket.updated_at.toISOString(),
-        messages: messages.map(msg => ({
-            id: msg.id,
-            ticketId: msg.ticket_id,
-            senderId: msg.sender_id,
-            senderType: msg.sender_type,
-            message: msg.message,
-            timestamp: msg.timestamp.toISOString(),
-        })),
-    };
+    const ticketDetails: SupportTicketDTO = {
+    id: ticket.id,
+    user_id: ticket.user_id, 
+    subject: ticket.subject,
+    description: ticket.description,
+    status: ticket.status,
+    priority: ticket.priority,
+    created_at: ticket.created_at.toISOString(), // Convert to string for DTO
+    updated_at: ticket.updated_at.toISOString(), // Convert to string for DTO
+    messages: messages.map(msg => ({
+        id: msg.id,
+        ticketId: msg.ticket_id,
+        senderId: msg.sender_id,
+        senderType: msg.sender_type,
+        message: msg.message,
+        timestamp: msg.timestamp.toISOString(), // Convert to string for DTO
+    })),
+};
 
     res.status(200).json(ticketDetails);
 };
@@ -115,16 +120,14 @@ export const addMessageToTicket = (req: Request, res: Response) => {
         db.createSupportMessage(ticketId, 'agent_01', 'agent', 'Thank you for your message. An agent will review your request and get back to you shortly.');
     }, 2000);
 
-    const responseMessage: SupportMessage = {
-        id: newMessage.id,
-        ticketId: newMessage.ticket_id,
-        senderId: newMessage.sender_id,
-        senderType: newMessage.sender_type,
-        message: newMessage.message,
-        // FIX D: DbSupportMessage 'timestamp' is a Date object, but the DTO expects a string.
-        // The type for SupportMessage needs to be changed in types.ts (done in step 3).
-        timestamp: newMessage.timestamp.toISOString(), 
-    };
+    const responseMessage: SupportMessageDTO = {
+    id: newMessage.id,
+    ticketId: newMessage.ticket_id,
+    senderId: newMessage.sender_id,
+    senderType: newMessage.sender_type,
+    message: newMessage.message,
+    timestamp: newMessage.timestamp.toISOString(), // Convert to string for DTO
+};
 
     res.status(201).json(responseMessage);
 };

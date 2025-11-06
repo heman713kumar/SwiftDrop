@@ -1,8 +1,21 @@
 
 import { Request, Response } from 'express';
 import * as db from '../db';
-import { UserProfile } from '../types';
+import { UserProfile, DbNotificationPreferences } from '../types';
 import { AuthenticatedRequest } from '../middleware/auth';
+
+// FIX: Define the required fallback object here to fix the "Cannot find name 'defaultNotifPrefs'" error
+const defaultNotifPrefs: DbNotificationPreferences = {
+    user_id: 'default',
+    orderUpdates: true,
+    promotions: true,
+    push_enabled: true,
+    sms_enabled: true,
+    email_enabled: true,
+    whatsapp_enabled: false,
+    quiet_hours_start: null,
+    quiet_hours_end: null,
+};
 
 // GET /api/users/profile
 // Fix: Use namespace-qualified express types to avoid global type conflicts.
@@ -30,6 +43,7 @@ export const getProfile = (req: Request, res: Response) => {
     quiet_hours_start: null,
     quiet_hours_end: null,
 };
+
     const notificationPreferences = db.findNotificationPreferencesByUserId(userId) || defaultNotifPrefs;
 
 
