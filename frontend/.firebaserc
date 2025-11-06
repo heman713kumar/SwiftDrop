@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "sdrop-authentication-project",
+    "firebase init hosting": "sdrop-authentication-project"
+  },
+  "targets": {},
+  "etags": {}
+}
