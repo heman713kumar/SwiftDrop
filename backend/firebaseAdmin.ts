@@ -2,8 +2,7 @@
 // It's used for securely verifying ID tokens sent from the frontend.
 
 import * as admin from 'firebase-admin';
-// FIX: Replaced 'require' with a standard ES module import for the service account key to resolve the "Cannot find name 'require'" error. This requires `resolveJsonModule: true` in tsconfig.
-import serviceAccount from './serviceAccountKey.json';
+import * as path from 'path'; // ADDED: Import path module for file resolution
 
 let isInitialized = false;
 
@@ -20,16 +19,20 @@ export const initializeFirebaseAdmin = () => {
 
         if (serviceAccountJson) {
             // Production: Initialize from the environment variable provided by Cloud Run Secrets.
+            // The JSON string is safely parsed here.
             const parsedServiceAccount = JSON.parse(serviceAccountJson);
             admin.initializeApp({
                 credential: admin.credential.cert(parsedServiceAccount),
             });
             console.log('[Firebase Admin] Initialized from environment variable.');
         } else {
-            // Local Development: Fallback to using the local JSON file.
-            // Ensure `serviceAccountKey.json` is in your /backend directory and added to .gitignore.
+            // Local Development: Fallback to using the local JSON file path.
+            // NOTE: We directly use the file path here, avoiding the problematic TS import.
+            const localKeyPath = path.join(__dirname, 'serviceAccountKey.json');
+            
+            // This assumes the local serviceAccountKey.json contains the correct structure.
             admin.initializeApp({
-                credential: admin.credential.cert(serviceAccount),
+                credential: admin.credential.cert(localKeyPath),
             });
             console.log('[Firebase Admin] Initialized from local serviceAccountKey.json file.');
         }
